@@ -1,0 +1,137 @@
+Folder PATH listing for volume Work
+Volume serial number is E6F4-63C0
+D:.
+|   .gitignore
+|   .metadata
+|   analysis_options.yaml
+|   movie.iml
+|   project_tree.txt
+|   pubspec.lock
+|   pubspec.yaml
+|   README.md
+|   
++---.dart_tool
+|   |   package_config.json
+|   |   package_graph.json
+|   |   version
+|   |   
+|   \---extension_discovery
+|           vs_code.json
+|           
++---.idea
+|   |   modules.xml
+|   |   workspace.xml
+|   |   
+|   +---libraries
+|   |       Dart_SDK.xml
+|   |       KotlinJavaRuntime.xml
+|   |       
+|   \---runConfigurations
+|           main_dart.xml
+|           
++---android
+|   |   .gitignore
+|   |   build.gradle.kts
+|   |   gradle.properties
+|   |   gradlew
+|   |   gradlew.bat
+|   |   local.properties
+|   |   movie_android.iml
+|   |   settings.gradle.kts
+|   |   
+|   +---app
+|   |   |   build.gradle.kts
+|   |   |   
+|   |   \---src
+|   |       +---debug
+|   |       |       AndroidManifest.xml
+|   |       |       
+|   |       +---main
+|   |       |   |   AndroidManifest.xml
+|   |       |   |   
+|   |       |   +---java
+|   |       |   |   \---io
+|   |       |   |       \---flutter
+|   |       |   |           \---plugins
+|   |       |   |                   GeneratedPluginRegistrant.java
+|   |       |   |                   
+|   |       |   +---kotlin
+|   |       |   |   \---com
+|   |       |   |       \---example
+|   |       |   |           \---movie
+|   |       |   |                   MainActivity.kt
+|   |       |   |                   
+|   |       |   \---res
+|   |       |       +---drawable
+|   |       |       |       launch_background.xml
+|   |       |       |       
+|   |       |       +---drawable-v21
+|   |       |       |       launch_background.xml
+|   |       |       |       
+|   |       |       +---mipmap-hdpi
+|   |       |       |       ic_launcher.png
+|   |       |       |       
+|   |       |       +---mipmap-mdpi
+|   |       |       |       ic_launcher.png
+|   |       |       |       
+|   |       |       +---mipmap-xhdpi
+|   |       |       |       ic_launcher.png
+|   |       |       |       
+|   |       |       +---mipmap-xxhdpi
+|   |       |       |       ic_launcher.png
+|   |       |       |       
+|   |       |       +---mipmap-xxxhdpi
+|   |       |       |       ic_launcher.png
+|   |       |       |       
+|   |       |       +---values
+|   |       |       |       styles.xml
+|   |       |       |       
+|   |       |       \---values-night
+|   |       |               styles.xml
+|   |       |               
+|   |       \---profile
+|   |               AndroidManifest.xml
+|   |               
+|   \---gradle
+|       \---wrapper
+|               gradle-wrapper.jar
+|               gradle-wrapper.properties
+|               
++---lib
+|   |   main.dart
+|   |   
+|   +---core
+|   |   +---api
+|   |   |       api_service.dart
+|   |   |       
+|   |   +---constants
+|   |   |       api_constants.dart
+|   |   |       
+|   |   +---router
+|   |   |       app_router.dart
+|   |   |       
+|   |   \---theme
+|   |           app_theme.dart
+|   |           
+|   +---models
+|   +---screens
+|   |   +---detail
+|   |   |       detail_screen.dart
+|   |   |       
+|   |   +---home
+|   |   |       home_screen.dart
+|   |   |       
+|   |   +---search
+|   |   |       search_screen.dart
+|   |   |       
+|   |   \---watch
+|   |           watch_screen.dart
+|   |           
+|   +---services
+|   +---utils
+|   \---widgets
+|           loading_widget.dart
+|           
+\---test
+        widget_test.dart
+        
