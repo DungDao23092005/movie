@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../models/movie.dart';
+import '../../models/movie_list_arguments.dart';
 import '../../services/movie_service.dart';
-import '../../widgets/home_banner.dart';
+import '../../widgets/banner_slider.dart';
+import '../../widgets/common/empty_view.dart';
+import '../../widgets/common/error_view.dart';
+import '../../widgets/common/loading_view.dart';
 import '../../widgets/horizontal_movie_list.dart';
 import '../../widgets/section_header.dart';
 
@@ -25,13 +29,12 @@ class _HomeScreenState extends State<HomeScreen> {
     _future = _loadData();
   }
 
-    Future<HomeData> _loadData() async {
+  Future<HomeData> _loadData() async {
     final results = await Future.wait([
       _service.getLatestMovies(),
       _service.getMoviesByCategory("phim-dang-chieu"),
       _service.getMoviesByCategory("phim-bo"),
       _service.getMoviesByCategory("phim-le"),
-      _service.getMoviesByCategory("phim-sap-chieu"),
     ]);
 
     return HomeData(
@@ -39,7 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
       nowPlaying: results[1],
       series: results[2],
       single: results[3],
-      comingSoon: results[4],
     );
   }
 
@@ -60,17 +62,25 @@ class _HomeScreenState extends State<HomeScreen> {
           future: _future,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const LoadingView();
             }
 
             if (snapshot.hasError) {
-              return _buildError(snapshot.error.toString());
+              return ErrorView(
+                error: snapshot.error.toString(),
+                onRetry: () {
+                  setState(() {
+                    _future = _loadData();
+                  });
+                },
+              );
             }
 
             if (!snapshot.hasData) {
-              return _buildEmpty();
+              return const EmptyView(
+                icon: Icons.movie_creation_outlined,
+                title: "Không có dữ liệu",
+              );
             }
 
             final data = snapshot.data!;
@@ -78,7 +88,6 @@ class _HomeScreenState extends State<HomeScreen> {
             return CustomScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               slivers: [
-
                 /// HEADER
                 SliverAppBar(
                   floating: true,
@@ -93,35 +102,44 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   actions: [
                     IconButton(
+                      icon: const Icon(Icons.search),
                       onPressed: () {
                         context.push("/search");
                       },
-                      icon: const Icon(Icons.search),
                     ),
                   ],
                 ),
 
-                /// BANNER
+                /// Banner
                 SliverToBoxAdapter(
-                  child: HomeBanner(
-                    movie: data.latest.first,
-                    onTap: () {
-                      context.push(
-                        "/detail",
-                        extra: data.latest.first.slug,
-                      );
-                    },
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 12,
+                      bottom: 8,
+                    ),
+                    child: BannerSlider(
+                      movies: data.latest.take(5).toList(),
+                    ),
                   ),
                 ),
 
-                /// PHIM MỚI
+                /// Phim mới
                 SliverToBoxAdapter(
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SectionHeader(
+                      SectionHeader(
                         title: "🔥 Phim mới cập nhật",
+                        onSeeAll: () {
+                          context.push(
+                            "/movies",
+                            extra: const MovieListArguments(
+                              title: "Phim mới cập nhật",
+                              slug: "",
+                              type: MovieListType.latest,
+                            ),
+                          );
+                        },
                       ),
                       HorizontalMovieList(
                         movies: data.latest,
@@ -130,14 +148,23 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
 
-                /// ĐANG CHIẾU
+                /// Đang chiếu
                 SliverToBoxAdapter(
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SectionHeader(
+                      SectionHeader(
                         title: "🎬 Đang chiếu",
+                        onSeeAll: () {
+                          context.push(
+                            "/movies",
+                            extra: const MovieListArguments(
+                              title: "Đang chiếu",
+                              slug: "phim-dang-chieu",
+                              type: MovieListType.category,
+                            ),
+                          );
+                        },
                       ),
                       HorizontalMovieList(
                         movies: data.nowPlaying,
@@ -146,14 +173,23 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
 
-                /// PHIM BỘ
+                /// Phim bộ
                 SliverToBoxAdapter(
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SectionHeader(
+                      SectionHeader(
                         title: "📺 Phim bộ",
+                        onSeeAll: () {
+                          context.push(
+                            "/movies",
+                            extra: const MovieListArguments(
+                              title: "Phim bộ",
+                              slug: "phim-bo",
+                              type: MovieListType.category,
+                            ),
+                          );
+                        },
                       ),
                       HorizontalMovieList(
                         movies: data.series,
@@ -162,14 +198,23 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
 
-                /// PHIM LẺ
+                /// Phim lẻ
                 SliverToBoxAdapter(
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SectionHeader(
+                      SectionHeader(
                         title: "🍿 Phim lẻ",
+                        onSeeAll: () {
+                          context.push(
+                            "/movies",
+                            extra: const MovieListArguments(
+                              title: "Phim lẻ",
+                              slug: "phim-le",
+                              type: MovieListType.category,
+                            ),
+                          );
+                        },
                       ),
                       HorizontalMovieList(
                         movies: data.single,
@@ -177,27 +222,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
-                                /// SẮP CHIẾU
-                SliverToBoxAdapter(
-                  child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
-                    children: [
-                      const SectionHeader(
-                        title: "🎥 Sắp chiếu",
-                      ),
-                      HorizontalMovieList(
-                        movies: data.comingSoon,
-                      ),
-                    ],
-                  ),
-                ),
 
-                /// Bottom Space
                 const SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 25,
-                  ),
+                  child: SizedBox(height: 25),
                 ),
               ],
             );
@@ -206,79 +233,18 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-  Widget _buildEmpty() {
-    return ListView(
-      children: const [
-        SizedBox(height: 200),
-        Icon(
-          Icons.movie_creation_outlined,
-          size: 90,
-          color: Colors.grey,
-        ),
-        SizedBox(height: 15),
-        Center(
-          child: Text(
-            "Không có dữ liệu",
-            style: TextStyle(
-              fontSize: 18,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildError(String error) {
-    return ListView(
-      children: [
-        const SizedBox(height: 150),
-        const Icon(
-          Icons.error_outline,
-          size: 90,
-          color: Colors.red,
-        ),
-        const SizedBox(height: 20),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Text(
-            error,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 16,
-            ),
-          ),
-        ),
-        const SizedBox(height: 20),
-        Center(
-          child: ElevatedButton.icon(
-            onPressed: () {
-              setState(() {
-                _future = _loadData();
-              });
-            },
-            icon: const Icon(Icons.refresh),
-            label: const Text("Thử lại"),
-          ),
-        )
-      ],
-    );
-  }
 }
 
-/// Model dùng riêng cho HomeScreen
 class HomeData {
   final List<Movie> latest;
   final List<Movie> nowPlaying;
   final List<Movie> series;
   final List<Movie> single;
-  final List<Movie> comingSoon;
 
   const HomeData({
     required this.latest,
     required this.nowPlaying,
     required this.series,
     required this.single,
-    required this.comingSoon,
   });
 }

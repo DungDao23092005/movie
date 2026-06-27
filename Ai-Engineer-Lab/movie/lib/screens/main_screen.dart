@@ -16,17 +16,16 @@ class _MainScreenState extends State<MainScreen> {
 
   int currentIndex = 0;
 
-  final pages = const [
+  final _favoriteKey = GlobalKey<FavoriteScreenState>();
 
-    HomeScreen(),
-
-    SearchScreen(),
-
-    FavoriteScreen(),
-
-    ProfileScreen(),
-
-  ];
+late final List<Widget> pages = [
+  const HomeScreen(),
+  const SearchScreen(),
+  FavoriteScreen(
+    key: _favoriteKey,
+  ),
+  const ProfileScreen(),
+];
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +44,14 @@ class _MainScreenState extends State<MainScreen> {
 
         selectedIndex: currentIndex,
 
-        onDestinationSelected: (value){
-
+        onDestinationSelected: (index) {
           setState(() {
-
-            currentIndex=value;
-
+            currentIndex = index;
           });
 
+          if (index == 2) {
+            _favoriteKey.currentState?.refreshFavorites();
+          }
         },
 
         destinations: const [

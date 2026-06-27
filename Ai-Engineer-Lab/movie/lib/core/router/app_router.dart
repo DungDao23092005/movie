@@ -1,7 +1,9 @@
 import 'package:go_router/go_router.dart';
 
+import '../../models/movie_list_arguments.dart';
 import '../../screens/detail/detail_screen.dart';
 import '../../screens/main_screen.dart';
+import '../../screens/movie_list/movie_list_screen.dart';
 import '../../screens/search/search_screen.dart';
 import '../../screens/watch/watch_screen.dart';
 
@@ -44,6 +46,18 @@ class AppRouter {
 
           return WatchScreen(
             videoUrl: url,
+          );
+        },
+      ),
+
+      /// Movie List
+      GoRoute(
+        path: "/movies",
+        builder: (context, state) {
+          final args = state.extra as MovieListArguments;
+
+          return MovieListScreen(
+            arguments: args,
           );
         },
       ),

@@ -28,11 +28,15 @@ class ApiService {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
+      print('GET: ${dio.options.baseUrl}$path');
       return await dio.get(
         path,
         queryParameters: queryParameters,
       );
     } on DioException catch (e) {
+      print('FAILED URL: ${e.requestOptions.uri}');
+      print('STATUS: ${e.response?.statusCode}');
+      print('BODY: ${e.response?.data}');
       throw Exception(_handleError(e));
     }
   }
@@ -63,7 +67,15 @@ class ApiService {
         return "Send Timeout";
 
       case DioExceptionType.badResponse:
-        return "Server Error : ${e.response?.statusCode}";
+        return '''
+      Status: ${e.response?.statusCode}
+
+      URL:
+      ${e.requestOptions.uri}
+
+      Response:
+      ${e.response?.data}
+      ''';
 
       case DioExceptionType.connectionError:
         return "No Internet Connection";

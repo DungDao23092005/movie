@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
+import 'core/theme/theme_controller.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await themeController.loadTheme();
 
   runApp(const MovieApp());
 }
@@ -14,17 +17,23 @@ class MovieApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: 'Movie App',
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: themeController,
+      builder: (context, themeMode, child) {
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
 
-      theme: AppTheme.lightTheme,
+          title: "Movie App",
 
-      darkTheme: AppTheme.darkTheme,
+          theme: AppTheme.lightTheme,
 
-      themeMode: ThemeMode.system,
+          darkTheme: AppTheme.darkTheme,
 
-      routerConfig: AppRouter.router,
+          themeMode: themeMode,
+
+          routerConfig: AppRouter.router,
+        );
+      },
     );
   }
 }
