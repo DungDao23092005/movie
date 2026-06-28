@@ -1,0 +1,15 @@
+{
+  "home": "Home",
+  "search": "Search",
+  "favorite": "Favorites",
+  "profile": "Profile",
+  "theme": "Theme",
+  "system_theme": "System Default",
+  "light_theme": "Light",
+  "dark_theme": "Dark",
+  "language": "Language",
+  "favorite_sub": "Saved movies list",
+  "history": "History",
+  "history_sub": "Recently watched movies",
+  "about": "About App"
+}

@@ -7,7 +7,7 @@ class HistoryMovie {
   final String episodeName;
   final String episodeEmbed;
   final DateTime watchedAt;
-
+  final int position; 
   const HistoryMovie({
     required this.slug,
     required this.name,
@@ -17,6 +17,7 @@ class HistoryMovie {
     required this.episodeName,
     required this.episodeEmbed,
     required this.watchedAt,
+    this.position = 0, 
   });
 
   factory HistoryMovie.fromJson(Map<String, dynamic> json) {
@@ -28,10 +29,8 @@ class HistoryMovie {
       thumbUrl: json['thumbUrl'] ?? '',
       episodeName: json['episodeName'] ?? '',
       episodeEmbed: json['episodeEmbed'] ?? '',
-      watchedAt: DateTime.tryParse(
-            json['watchedAt'] ?? '',
-          ) ??
-          DateTime.now(),
+      watchedAt: DateTime.tryParse(json['watchedAt'] ?? '') ?? DateTime.now(),
+      position: json['position'] ?? 0, // Bổ sung
     );
   }
 
@@ -45,6 +44,7 @@ class HistoryMovie {
       'episodeName': episodeName,
       'episodeEmbed': episodeEmbed,
       'watchedAt': watchedAt.toIso8601String(),
+      'position': position, // Bổ sung
     };
   }
 
@@ -57,6 +57,7 @@ class HistoryMovie {
     String? episodeName,
     String? episodeEmbed,
     DateTime? watchedAt,
+    int? position,
   }) {
     return HistoryMovie(
       slug: slug ?? this.slug,
@@ -67,21 +68,16 @@ class HistoryMovie {
       episodeName: episodeName ?? this.episodeName,
       episodeEmbed: episodeEmbed ?? this.episodeEmbed,
       watchedAt: watchedAt ?? this.watchedAt,
+      position: position ?? this.position,
     );
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-
-    return other is HistoryMovie &&
-        other.slug == slug &&
-        other.episodeName == episodeName;
+    return other is HistoryMovie && other.slug == slug && other.episodeName == episodeName;
   }
 
   @override
-  int get hashCode => Object.hash(
-        slug,
-        episodeName,
-      );
+  int get hashCode => Object.hash(slug, episodeName);
 }

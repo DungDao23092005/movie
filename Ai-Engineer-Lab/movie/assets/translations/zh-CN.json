@@ -1,0 +1,15 @@
+{
+  "home": "首页",
+  "search": "搜索",
+  "favorite": "收藏",
+  "profile": "我的",
+  "theme": "主题",
+  "system_theme": "跟随系统",
+  "light_theme": "亮色",
+  "dark_theme": "暗色",
+  "language": "语言",
+  "favorite_sub": "已保存的电影列表",
+  "history": "观看历史",
+  "history_sub": "最近观看的电影",
+  "about": "关于应用"
+}

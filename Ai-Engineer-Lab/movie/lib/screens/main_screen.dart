@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'favorite/favorite_screen.dart';
 import 'home/home_screen.dart';
@@ -41,63 +42,37 @@ late final List<Widget> pages = [
       ),
 
       bottomNavigationBar: NavigationBar(
-
         selectedIndex: currentIndex,
-
         onDestinationSelected: (index) {
           setState(() {
             currentIndex = index;
           });
-
           if (index == 2) {
             _favoriteKey.currentState?.refreshFavorites();
           }
         },
-
-        destinations: const [
-
+        destinations: [
           NavigationDestination(
-
-            icon: Icon(Icons.home_outlined),
-
-            selectedIcon: Icon(Icons.home),
-
-            label: "Home",
-
+            icon: const Icon(Icons.home_outlined),
+            selectedIcon: const Icon(Icons.home),
+            label: "home".tr(), // Đổi ở đây
           ),
-
           NavigationDestination(
-
-            icon: Icon(Icons.search),
-
-            label: "Search",
-
+            icon: const Icon(Icons.search),
+            label: "search".tr(), // Đổi ở đây
           ),
-
           NavigationDestination(
-
-            icon: Icon(Icons.favorite_outline),
-
-            selectedIcon: Icon(Icons.favorite),
-
-            label: "Favorite",
-
+            icon: const Icon(Icons.favorite_outline),
+            selectedIcon: const Icon(Icons.favorite),
+            label: "favorite".tr(), // Đổi ở đây
           ),
-
           NavigationDestination(
-
-            icon: Icon(Icons.person_outline),
-
-            selectedIcon: Icon(Icons.person),
-
-            label: "Profile",
-
+            icon: const Icon(Icons.person_outline),
+            selectedIcon: const Icon(Icons.person),
+            label: "profile".tr(), // Đổi ở đây
           ),
-
         ],
-
       ),
-
     );
 
   }

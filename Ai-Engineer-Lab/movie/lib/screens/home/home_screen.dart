@@ -31,10 +31,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<HomeData> _loadData() async {
     final results = await Future.wait([
-      _service.getLatestMovies(),
-      _service.getMoviesByCategory("phim-dang-chieu"),
-      _service.getMoviesByCategory("phim-bo"),
-      _service.getMoviesByCategory("phim-le"),
+      _service.getLatestMovies().catchError((_) => <Movie>[]),
+      _service.getMoviesByCategory("hoat-hinh").catchError((_) => <Movie>[]), 
+      
+      _service.getMoviesByCategory("phim-bo").catchError((_) => <Movie>[]),
+      _service.getMoviesByCategory("phim-le").catchError((_) => <Movie>[]),
     ]);
 
     return HomeData(
@@ -148,19 +149,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
 
-                /// Đang chiếu
+                /// Phim hoạt hình
                 SliverToBoxAdapter(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SectionHeader(
-                        title: "🎬 Đang chiếu",
+                        title: "🦄 Phim Hoạt Hình", // Đổi tên hiển thị
                         onSeeAll: () {
                           context.push(
                             "/movies",
                             extra: const MovieListArguments(
-                              title: "Đang chiếu",
-                              slug: "phim-dang-chieu",
+                              title: "Phim Hoạt Hình", 
+                              // SỬA Ở ĐÂY:
+                              slug: "hoat-hinh", // Trùng khớp với API
                               type: MovieListType.category,
                             ),
                           );

@@ -97,4 +97,27 @@ class HistoryStorage {
 
     await prefs.remove(_key);
   }
+
+  /// Thêm phương thức này vào bên trong class HistoryStorage
+  static Future<void> updateWatchPosition(String slug, String episodeName, int positionInSeconds) async {
+    final history = await getHistory();
+    
+    final index = history.indexWhere(
+      (e) => e.slug == slug && e.episodeName == episodeName,
+    );
+
+    if (index != -1) {
+      final updatedMovie = history[index].copyWith(
+        position: positionInSeconds,
+        watchedAt: DateTime.now(),
+      );
+      history[index] = updatedMovie;
+      
+      // Đưa phim vừa xem lên đầu danh sách
+      final item = history.removeAt(index);
+      history.insert(0, item);
+      
+      await saveHistory(history);
+    }
+  }
 }

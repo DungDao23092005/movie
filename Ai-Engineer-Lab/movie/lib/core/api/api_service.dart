@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import '../constants/api_constants.dart';
 
@@ -28,15 +29,15 @@ class ApiService {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      print('GET: ${dio.options.baseUrl}$path');
+      debugPrint('GET: ${dio.options.baseUrl}$path');
       return await dio.get(
         path,
         queryParameters: queryParameters,
       );
     } on DioException catch (e) {
-      print('FAILED URL: ${e.requestOptions.uri}');
-      print('STATUS: ${e.response?.statusCode}');
-      print('BODY: ${e.response?.data}');
+      debugPrint('FAILED URL: ${e.requestOptions.uri}');
+      debugPrint('STATUS: ${e.response?.statusCode}');
+      debugPrint('BODY: ${e.response?.data}');
       throw Exception(_handleError(e));
     }
   }

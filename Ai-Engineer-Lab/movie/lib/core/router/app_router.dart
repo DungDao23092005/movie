@@ -6,6 +6,7 @@ import '../../screens/main_screen.dart';
 import '../../screens/movie_list/movie_list_screen.dart';
 import '../../screens/search/search_screen.dart';
 import '../../screens/watch/watch_screen.dart';
+import '../../models/watch_arguments.dart';
 
 class AppRouter {
   AppRouter._();
@@ -42,10 +43,10 @@ class AppRouter {
       GoRoute(
         path: "/watch",
         builder: (context, state) {
-          final url = state.extra as String;
+          final args = state.extra as WatchArguments;
 
           return WatchScreen(
-            videoUrl: url,
+            arguments: args,
           );
         },
       ),
