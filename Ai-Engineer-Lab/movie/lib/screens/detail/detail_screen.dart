@@ -6,10 +6,9 @@ import 'package:palette_generator/palette_generator.dart';
 import '../../models/movie_detail.dart';
 import '../../models/favorite_movie.dart';
 import '../../models/history_movie.dart';
-import '../../models/watch_arguments.dart'; // Đã import WatchArguments
 import '../../services/movie_service.dart';
 import '../../storage/favorite_storage.dart';
-import '../../storage/history_storage.dart'; // Đã import HistoryStorage
+import '../../storage/history_storage.dart';
 import '../../widgets/episode_card.dart';
 import '../../widgets/info_chip.dart';
 import '../../widgets/common/loading_view.dart';
@@ -233,6 +232,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             return EpisodeCard(
                               episode: episode,
                               onTap: () async {
+                                // 1. Lưu lịch sử xem phim (không cần lưu số giây nữa)
                                 final historyEntry = HistoryMovie(
                                   slug: movie.slug,
                                   name: movie.name,
@@ -242,28 +242,18 @@ class _DetailScreenState extends State<DetailScreen> {
                                   episodeName: episode.name,
                                   episodeEmbed: episode.embed,
                                   watchedAt: DateTime.now(),
-                                  position: 0,
                                 );
-
                                 await HistoryStorage.addHistory(historyEntry);
-
-                                final historyList = await HistoryStorage.getHistory();
-                                final savedEntry = historyList.where((e) => e.slug == movie.slug && e.episodeName == episode.name).firstOrNull;
-                                final startPosition = savedEntry?.position ?? 0;
 
                                 if (!context.mounted) return;
 
+                                // 2. Chuyển sang màn hình xem phim và ném thẳng link embed qua
                                 context.push(
                                   '/watch',
-                                  extra: WatchArguments(
-                                    videoUrl: episode.m3u8Url.isNotEmpty ? episode.m3u8Url : episode.embed,
-                                    slug: movie.slug,
-                                    episodeName: episode.name,
-                                    startAt: startPosition,
-                                  ),
+                                  extra: episode.embed, 
                                 );
                               },
-                            );
+                            );                      
                           }).toList(),
                         )
                       else

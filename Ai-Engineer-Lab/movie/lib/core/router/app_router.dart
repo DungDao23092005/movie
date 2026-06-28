@@ -6,7 +6,6 @@ import '../../screens/main_screen.dart';
 import '../../screens/movie_list/movie_list_screen.dart';
 import '../../screens/search/search_screen.dart';
 import '../../screens/watch/watch_screen.dart';
-import '../../models/watch_arguments.dart';
 
 class AppRouter {
   AppRouter._();
@@ -39,15 +38,12 @@ class AppRouter {
         },
       ),
 
-      /// Watch
+      /// Watch (Đã cập nhật theo yêu cầu)
       GoRoute(
         path: "/watch",
         builder: (context, state) {
-          final args = state.extra as WatchArguments;
-
-          return WatchScreen(
-            arguments: args,
-          );
+          final embedUrl = state.extra as String; // Chỉ lấy chuỗi URL
+          return WatchScreen(embedUrl: embedUrl);
         },
       ),
 
